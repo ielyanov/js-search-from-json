@@ -1,0 +1,173 @@
+<html>
+<head>
+  <script>
+		document.addEventListener('DOMContentLoaded', function(){	
+			/* нужно привести все значения name к нижнему регистру, чтобы сделать поиск регистронезависимым*/
+			var json = JSON.stringify({
+						'positions': [
+							{
+							  'id':'1',
+							  'name':'one'
+							},
+							{
+							  'id':'2',
+							  'name':'two'
+							},
+							{
+							  'id':'3',
+							  'name':'three'
+							},
+							{
+							  'id':'4',
+							  'name':'onyx'
+							},							
+							{
+							  'id':'5',
+							  'name':'onyx5'
+							},							
+							{
+							  'id':'6',
+							  'name':'onyx6'
+							},							
+							{
+							  'id':'7',
+							  'name':'onyx7'
+							},							
+							{
+							  'id':'8',
+							  'name':'onyx8'
+							},							
+							{
+							  'id':'9',
+							  'name':'onyx9'
+							},							
+							{
+							  'id':'10',
+							  'name':'onyx10'
+							},							
+							{
+							  'id':'11',
+							  'name':'onyx11'
+							},							
+							{
+							  'id':'12',
+							  'name':'onyx12'
+							},							
+							{
+							  'id':'13',
+							  'name':'onyx13'
+							},							
+							{
+							  'id':'14',
+							  'name':'onyx14'
+							},							
+							{
+							  'id':'15',
+							  'name':'onyx15'
+							},							
+							{
+							  'id':'16',
+							  'name':'onyx16'
+							},							
+							{
+							  'id':'17',
+							  'name':'onyx17'
+							},								
+							{
+							  'id':'18',
+							  'name':'konyx18'
+							},							
+							{
+							  'id':'19',
+							  'name':'onyx18'
+							}
+						]
+			});		
+
+			json = JSON.parse(json);
+			
+			/*Поиск строки searchKey по значениям в массиве arr */ 
+			function searchPositions(arr, searchKey) 
+			{
+			  return arr.filter(obj => Object.keys(obj).some(key => obj[key].includes(searchKey)));
+			}
+			
+			/*Начинаем поиск, когда в поле введено больше одного символа*/
+			document.addEventListener("keyup", function(e,fl) {			
+				if (e.target.id == 'search_position') 
+				{
+					if(e.target.value.length > 1)
+					{
+						var result = "<ul>", ps;
+						ps = searchPositions(json.positions, e.target.value.toLowerCase());
+						
+						for(var i=0; i<ps.length; i++)
+						{
+							result += '<li class="search_item" id="'+ps[i].id+'">'+ps[i].name+'</li>'; 
+						}   
+						result += "</ul>";
+						e.target.parentNode.querySelector('#result').innerHTML = result;
+					}
+				}
+			});
+			
+			/*Выбираем нужный результат поиска и присваиваем полю значение*/
+			document.addEventListener("click", function(e) {
+				if (e.target.className == 'search_item') 
+				{		
+                    var elem = e.target.parentNode.parentNode.parentNode;				
+					elem.querySelector('#position_id').value = e.target.id;
+					elem.querySelector('#search_position').value = e.target.innerHTML;
+					
+					elem.querySelector('#result').innerHTML = "";
+				}
+			});
+			/*Клонируем поле*/
+			document.addEventListener("click", function(e) {
+				if (e.target.id == 'add-clone') 
+				{	
+                    var parent = document.querySelector('.positions');				
+					var clone = parent.querySelector('#position').cloneNode(true);
+					clone.classList.add('clone'); /*добавляем класс clone всем клонам*/
+					parent.appendChild(clone);
+				}
+			});
+			
+			/*Удаляем клонированое поле, исходное поле просто очищаем*/
+			document.addEventListener("click", function(e) {
+				if (e.target.id == 'remove-clone') 
+				{	
+				    if(e.target.parentNode.classList.contains('clone'))
+					{
+                       e.target.parentNode.remove();
+					}
+					else
+					{
+					   e.target.parentNode.querySelector('#position_id').value = "";
+					   e.target.parentNode.querySelector('#search_position').value = "";
+					}
+				}
+			});
+			
+		}); 
+  </script>
+  <style>
+    .position{max-width:250px;max-height:250px;overflow-y:scroll}
+	ul{padding:0px;margin:0;border: 1px solid #ccc;}
+	.search_item{border-bottom:1px dotted #ccc}
+	.search_item:hover{background-color:#ccc}
+  </style>
+<head>
+<body>
+    <div class="positions">
+	  <div id="position" class="position">
+		<input type="hidden" id="position_id" name="position_id[]" value="" />
+		<label for="search_position">Search position</label>
+		<input type="text" id="search_position" name="search_position[]" value="" />
+		<input type="button" id="remove-clone" value="-">
+		<div id="result" class="result"></div>
+	  </div>
+	</div>
+	<button id="add-clone">[+] Cloning fields</button>
+</body>
+</html>
