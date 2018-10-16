@@ -111,40 +111,37 @@
 				}
 			});
 			
-			/*Выбираем нужный результат поиска и присваиваем полю значение*/
 			document.addEventListener("click", function(e) {
+				/*Выбираем нужный результат поиска и присваиваем полю значение*/
 				if (e.target.className == 'search_item') 
-				{		
-                    var elem = e.target.parentNode.parentNode.parentNode;				
+				{
+					var elem = e.target.parentNode.parentNode.parentNode;				
 					elem.querySelector('#position_id').value = e.target.id;
 					elem.querySelector('#search_position').value = e.target.innerHTML;
 					
 					elem.querySelector('#result').innerHTML = "";
 				}
-			});
-			/*Клонируем поле*/
-			document.addEventListener("click", function(e) {
+				
+				/*Клонируем поле*/
 				if (e.target.id == 'add-clone') 
-				{	
-                    var parent = document.querySelector('.positions');				
+				{
+					var parent = document.querySelector('.positions');				
 					var clone = parent.querySelector('#position').cloneNode(true);
 					clone.classList.add('clone'); /*добавляем класс clone всем клонам*/
 					parent.appendChild(clone);
 				}
-			});
-			
-			/*Удаляем клонированое поле, исходное поле просто очищаем*/
-			document.addEventListener("click", function(e) {
+				
+				/*Удаляем клонированое поле, исходное поле просто очищаем*/
 				if (e.target.id == 'remove-clone') 
 				{	
 				    if(e.target.parentNode.classList.contains('clone'))
 					{
-                       e.target.parentNode.remove();
+						e.target.parentNode.remove();
 					}
 					else
 					{
-					   e.target.parentNode.querySelector('#position_id').value = "";
-					   e.target.parentNode.querySelector('#search_position').value = "";
+						e.target.parentNode.querySelector('#position_id').value = "";
+						e.target.parentNode.querySelector('#search_position').value = "";
 					}
 				}
 			});
